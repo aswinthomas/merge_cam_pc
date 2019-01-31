@@ -3,24 +3,24 @@
 #include <cv_bridge/cv_bridge.h>
 
 // pcl
-#include <pcl_conversions/pcl_conversions.h>
-#include <pcl/point_types.h>
-#include <pcl/point_cloud.h>
-#include <pcl/io/pcd_io.h>
 #include <pcl/common/eigen.h>
 #include <pcl/common/transforms.h>
+#include <pcl/io/pcd_io.h>
+#include <pcl/point_cloud.h>
+#include <pcl/point_types.h>
+#include <pcl_conversions/pcl_conversions.h>
 
 // ros
+#include <image_transport/image_transport.h>
 #include <ros/ros.h>
+#include <sensor_msgs/CameraInfo.h>
 #include <sensor_msgs/PointCloud.h>
 #include <sensor_msgs/PointCloud2.h>
+#include <sensor_msgs/image_encodings.h>
 #include <sensor_msgs/point_cloud2_iterator.h>
 #include <sensor_msgs/point_cloud_conversion.h>
-#include <sensor_msgs/image_encodings.h>
-#include <sensor_msgs/CameraInfo.h>
 #include <string>
 #include <typeinfo>
-#include <image_transport/image_transport.h>
 
 // internal
 #include <test_assignment/MyPointCloud.h>
@@ -29,7 +29,6 @@ cv::Mat proj_mat_;
 cv::Mat image_;
 std::vector<float> calibration_;
 ros::Publisher pub_pc_;
-
 
 using namespace std;
 using namespace cv;
@@ -60,7 +59,7 @@ void pointCloudCallback(const sensor_msgs::PointCloud2ConstPtr &msg) {
   fromROSMsg(*msg, pc);
 
   // transform to camera coordinates
-  MyPointCloud pointcloud = MyPointCloud(pc).transform(0, 0, 0, M_PI / 2, 0, 0);
+  MyPointCloud pointcloud = MyPointCloud(pc);//.transform(0, 0, 0, M_PI / 2, 0, 0);
 
   MyPointCloud transformed = pointcloud.transform(calibration_);
   PointCloud<MyPoint> filtered_pc;
@@ -74,7 +73,7 @@ void pointCloudCallback(const sensor_msgs::PointCloud2ConstPtr &msg) {
 
   // transform back
   Eigen::Affine3f transf = getTransformation(0, 0, 0, -M_PI / 2, 0, 0);
-  transformPointCloud(color_cloud, color_cloud, transf);
+  //transformPointCloud(color_cloud, color_cloud, transf);
 
   sensor_msgs::PointCloud2 color_cloud2;
   toROSMsg(color_cloud, color_cloud2);

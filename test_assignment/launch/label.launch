@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<launch>
+  <rosparam command="load" file="$(find test_assignment)/calibration.yaml" />
+  <node pkg="test_assignment" type="test_assignment_node" name="label" output="screen">
+  </node>
+</launch>

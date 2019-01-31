@@ -6,6 +6,8 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   std_msgs
   pcl_ros
+  cv_bridge
+  image_transport
 )
 
 

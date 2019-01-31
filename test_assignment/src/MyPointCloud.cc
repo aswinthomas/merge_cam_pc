@@ -18,8 +18,8 @@ MyPointCloud::MyPointCloud(PointCloud<MyPoint> pc) : pc_(pc) {}
 MyPointCloud MyPointCloud::transform(float x, float y, float z, float rot_x,
                                      float rot_y, float rot_z) {
   Eigen::Affine3f transf = getTransformation(x, y, z, rot_x, rot_y, rot_z);
-  PointCloud<Point> new_cloud;
-  transformPointCloud(point_cloud, new_cloud, transf);
+  PointCloud<MyPoint> new_cloud;
+  transformPointCloud(pc_, new_cloud, transf);
   return MyPointCloud(new_cloud);
 }
 
@@ -28,39 +28,17 @@ MyPointCloud MyPointCloud::transform(vector<float> cal) {
   return transform(cal[0], cal[1], cal[2], cal[3], cal[4], cal[5]);
 }
 
-cv::Point2f projectf(const Point &pt, const cv::Mat &projection_matrix) {
-  cv::Mat pt_3D(4, 1, CV_32FC1);
-
-  pt_3D.at<float>(0) = pt.x;
-  pt_3D.at<float>(1) = pt.y;
-  pt_3D.at<float>(2) = pt.z;
-  pt_3D.at<float>(3) = 1.0f; 
-
-  cv::Mat pt_2D = projection_matrix * pt_3D;
-
-  float w = pt_2D.at<float>(2);
-  float x = pt_2D.at<float>(0) / w;
-  float y = pt_2D.at<float>(1) / w;
-
-  return cv::Point2f(x, y);
-}
-
-cv::Point project(const Point &pt, const cv::Mat &projection_matrix) {
-  cv::Point2f xy = projectf(pt, projection_matrix);
-  return cv::Point(xy.x, xy.y);
-}
-
 cv::Mat MyPointCloud::project(Mat projection_matrix, Rect frame,
                               PointCloud<MyPoint> *visible_points) {
   Mat plane = cv::Mat::zeros(frame.size(), CV_32FC1);
 
-  for (PointCloud<Point>::iterator pt = point_cloud.points.begin();
-       pt < point_cloud.points.end(); pt++) {
+  for (PointCloud<MyPoint>::iterator pt = pc_.points.begin();
+       pt < pc_.points.end(); pt++) {
 
     // ignore if behind camera
     if (pt->z < 0)
       continue;
-    cv::Point xy = project(*pt, projection_matrix);
+    cv::Point xy = MyPointCloud::project(*pt, projection_matrix);
     if (xy.inside(frame)) {
       if (visible_points != NULL) {
         visible_points->push_back(*pt);
@@ -75,7 +53,7 @@ cv::Mat MyPointCloud::project(Mat projection_matrix, Rect frame,
   return plane_gray;
 }
 
-Mat Velodyne::Velodyne::project(Mat projection_matrix, Rect frame, Mat image) {
+Mat MyPointCloud::project(Mat projection_matrix, Rect frame, Mat image) {
   Mat plane = project(projection_matrix, frame, NULL);
 
   ROS_ASSERT(frame.width == image.cols && frame.height == image.rows);
@@ -92,8 +70,8 @@ PointCloud<PointXYZRGBA> MyPointCloud::segmentedColor(cv::Mat frame_rgb,
                                                       cv::Mat P) {
   PointCloud<PointXYZRGBA> cloud;
 
-  for (PointCloud<Point>::iterator pt = pc_.begin(); pt < pc_.end(); pt++) {
-    Point2f xy = Velodyne::Velodyne::projectf(*pt, P);
+  for (PointCloud<MyPoint>::iterator pt = pc_.begin(); pt < pc_.end(); pt++) {
+    Point2f xy = projectf(*pt, P);
     int val = frame_rgb.at<short>(cv::Point(xy.x, xy.y));
     int r = 0, g = 0, b = 0;
     switch (val) {
@@ -168,7 +146,7 @@ PointCloud<PointXYZRGBA> MyPointCloud::segmentedColor(cv::Mat frame_rgb,
     rgba.b = b;
     rgba.a = 255 - val;
 
-    cloud.push_back(pt_rgba);
+    cloud.push_back(rgba);
   }
   return cloud;
 }
