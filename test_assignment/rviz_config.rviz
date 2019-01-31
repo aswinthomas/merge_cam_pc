@@ -9,6 +9,7 @@ Panels:
         - /PointCloud21
         - /PointCloud21/Status1
         - /SegmentedImage1
+        - /MarkerArray1
       Splitter Ratio: 0.5
     Tree Height: 1088
   - Class: rviz/Selection
@@ -91,7 +92,7 @@ Visualization Manager:
       Size (Pixels): 7
       Size (m): 0.009999999776482582
       Style: Points
-      Topic: /colored_points
+      Topic: /pcl_coloring/velodyne_coloured
       Unreliable: false
       Use Fixed Frame: true
       Use rainbow: true
@@ -165,25 +166,25 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 30.036266326904297
+      Distance: 71.16317749023438
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: -0.8553524017333984
-        Y: -0.523945152759552
-        Z: 4.502089500427246
+        X: -1.8462365865707397
+        Y: 2.405414342880249
+        Z: 7.168391704559326
       Focal Shape Fixed Size: false
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.23039790987968445
+      Pitch: 0.5302050113677979
       Target Frame: base_link
       Value: Orbit (rviz)
-      Yaw: 3.1322245597839355
+      Yaw: 3.1585888862609863
     Saved: ~
 Window Geometry:
   Displays:

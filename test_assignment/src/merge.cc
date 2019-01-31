@@ -59,7 +59,7 @@ void pointCloudCallback(const sensor_msgs::PointCloud2ConstPtr &msg) {
   fromROSMsg(*msg, pc);
 
   // transform to camera coordinates
-  MyPointCloud pointcloud = MyPointCloud(pc);//.transform(0, 0, 0, M_PI / 2, 0, 0);
+  MyPointCloud pointcloud = MyPointCloud(pc).transform(0, 0, 0, M_PI / 2, 0, 0);
 
   MyPointCloud transformed = pointcloud.transform(calibration_);
   PointCloud<MyPoint> filtered_pc;
@@ -73,7 +73,7 @@ void pointCloudCallback(const sensor_msgs::PointCloud2ConstPtr &msg) {
 
   // transform back
   Eigen::Affine3f transf = getTransformation(0, 0, 0, -M_PI / 2, 0, 0);
-  //transformPointCloud(color_cloud, color_cloud, transf);
+  transformPointCloud(color_cloud, color_cloud, transf);
 
   sensor_msgs::PointCloud2 color_cloud2;
   toROSMsg(color_cloud, color_cloud2);
@@ -81,6 +81,8 @@ void pointCloudCallback(const sensor_msgs::PointCloud2ConstPtr &msg) {
 
   pub_pc_.publish(color_cloud2);
 }
+
+
 
 int main(int argc, char **argv) {
   ros::init(argc, argv, "pc_labeler");
@@ -101,3 +103,5 @@ int main(int argc, char **argv) {
 
   return EXIT_SUCCESS;
 }
+
+

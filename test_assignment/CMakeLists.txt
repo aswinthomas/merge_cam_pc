@@ -8,6 +8,8 @@ find_package(catkin REQUIRED COMPONENTS
   pcl_ros
   cv_bridge
   image_transport
+  image_geometry
+  backward_ros
 )
 
 
@@ -30,6 +32,13 @@ include_directories(
 
 add_executable(${PROJECT_NAME}_node src/merge.cc src/MyPointCloud.cc)
 
+add_executable(${PROJECT_NAME}_ph_node src/ph_merge.cc)
+
 target_link_libraries(${PROJECT_NAME}_node
+   ${catkin_LIBRARIES}
+)
+
+
+target_link_libraries(${PROJECT_NAME}_ph_node
    ${catkin_LIBRARIES}
 )
