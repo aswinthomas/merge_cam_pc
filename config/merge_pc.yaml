@@ -1,0 +1,6 @@
+camera_frame: camera_semseg
+pc_frame: lidar_0
+robot_frame: base_link
+camera_image_topic: /camera_semseg/image_raw
+camera_info_topic: /camera_semseg/camera_info
+pc_topic: /lidar_0

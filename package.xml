@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>test_assignment</name>
+  <name>merge_cam_pc</name>
   <version>0.0.0</version>
-  <description>The test_assignment package</description>
+  <description>The merge_cam_pc package</description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag -->
   <!-- Example:  -->

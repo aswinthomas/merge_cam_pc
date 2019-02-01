@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<launch>
+  <rosparam command="load" file="$(find merge_cam_pc)/calibration.yaml" />
+  <node pkg="merge_cam_pc" type="merge_cam_pc_node" name="label" output="screen">
+  </node>
+</launch>
