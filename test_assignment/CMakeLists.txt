@@ -10,6 +10,7 @@ find_package(catkin REQUIRED COMPONENTS
   image_transport
   image_geometry
   backward_ros
+  visualization_msgs
 )
 
 

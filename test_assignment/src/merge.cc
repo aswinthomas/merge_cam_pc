@@ -82,8 +82,6 @@ void pointCloudCallback(const sensor_msgs::PointCloud2ConstPtr &msg) {
   pub_pc_.publish(color_cloud2);
 }
 
-
-
 int main(int argc, char **argv) {
   ros::init(argc, argv, "pc_labeler");
 
@@ -103,5 +101,3 @@ int main(int argc, char **argv) {
 
   return EXIT_SUCCESS;
 }
-
-
